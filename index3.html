@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="js/angular.js"></script>
+    <script>
+    angular.module('upTimeApp', ['engines', 'cars'])
+        .run(function($rootScope, car) {
+            $rootScope.appStarted = new Date();
+        })
+        .controller('appCtrl', function(car) {
+            car.start();
+        });
+    angular.module('cars', [])
+        .factory('car', function($log, dieselEngine) {
+            return {
+                start: function() {
+                    $log.info('Starting ' + dieselEngine.type + '!');
+                }
+            };
+        });
+    angular.module('engines', [])
+        .factory('dieselEngine', function() {
+            return {
+                type: 'diesel'
+            };
+        });
+    </script>
+</head>
+<body ng-app="upTimeApp" ng-controller="appCtrl">
+    Application started at {{appStarted}}.
+</body>
+</html>

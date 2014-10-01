@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="js/angular.js"></script>
+    <script>
+    var HelloCtrl = function($scope) {
+        $scope.population = 7000;
+        $scope.countries = [
+            {name: 'France', population: 63.1},
+            {name: 'United Kingdom', population: 61.8},
+        ];
+        $scope.worldP = function(countryP) {
+            return (countryP / $scope.population) * 100;
+        };
+    }
+    </script>
+</head>
+<body ng-app>
+    <div ng-controller="HelloCtrl">
+        <ul>
+            <li ng-repeat="country in countries">
+                {{country.name}} - {{country.population}} - {{worldP(country.population)}}%
+            </li>
+        </ul>
+        Total: {{population}}.
+    </div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <script src="js/angular.js"></script>
+    <script>
+    angular.module('escaping', [])
+        .controller('EscapingCtrl', function($scope) {
+            $scope.name = 'John';
+            $scope.getName = function() {
+                return $scope.name;
+            };
+            $scope.users = [
+                {name: 'Jack', email: 'jack@gmail.com', selected: false},
+                {name: 'Sean', email: 'sean@gmail.com', selected: true},
+                {name: 'Keith', email: 'keith@gmail.com', selected: false}
+            ];
+            $scope.toggleSelected = function(user, $event) {
+                user.selected = !user.selected;
+                console.log($event);
+            };
+        })
+        .controller('RowCtrl', function($scope) {
+            $scope.selected = false;
+            $scope.toggleSelected = function() {
+                $scope.selected = !$scope.selected;
+            };
+            $scope.isSelected = function() {
+                return $scope.selected;
+            };
+        });
+    </script>
+</head>
+<body ng-app="escaping" ng-controller="EscapingCtrl">
+    <div class="container">
+        <section class="well">
+            Say <input type="text" ng-model="name">
+            <h1>Hello, {{getName()}}!</h1>
+        </section>
+        <div ng-include="'index5.include.html'"></div>
+
+        <!-- use EscapingCtrl controller -->
+        <table class="table table-bordered">
+            <tr ng-repeat="user in users" ng-click="toggleSelected(user, $event)" ng-switch on="user.selected"
+                    ng-class="{'active': !($index % 2), 'info': $index % 2}">
+                <td>{{$index + 1}}</td>
+                <td>{{user.name}}</td>
+                <td>{{user.email}}</td>
+                <td ng-switch-when="true">*</td>
+                <td ng-switch-default>&nbsp;</td>
+            <tr>
+        </table>
+
+        <!-- use RowCtrl controller -->
+        <table class="table table-bordered">
+            <tr ng-repeat="user in users" ng-controller="RowCtrl" ng-click="toggleSelected()" ng-switch on="isSelected()"
+                    ng-class-even="'active'" ng-class-odd="'info'">
+                <td>{{$index + 1}}</td>
+                <td>{{user.name}}</td>
+                <td>{{user.email}}</td>
+                <td ng-switch-when="true">*</td>
+                <td ng-switch-default>&nbsp;</td>
+            <tr>
+        </table>
+
+        <!-- ngRepeat -->
+        <dl>
+            <dt ng-repeat-start="user in users">{{$index + 1}}. {{user.name}}</li>
+            <dd ng-repeat-end>{{user.email}}</li>
+        </dl>
+    </div>
+</body>
+</html>

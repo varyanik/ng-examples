@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="js/angular.js"></script>
+    <script src="js/angular-sanitize.js"></script>
+    <script>
+    angular.module('escaping', ['ngSanitize'])
+        .controller('EscapingCtrl', function($scope) {
+            $scope.name = 'John';
+            $scope.getName = function() {
+                return $scope.name;
+            };
+            $scope.unsafeName = function() {
+                return 'Test <b>' + $scope.name + '</b>';
+            };;
+        });
+    </script>
+</head>
+<body ng-app="escaping" ng-controller="EscapingCtrl">
+    Say <input type="text" ng-model="name">
+        <span ng-hide="name.length">Should be not empty.</span>
+        <span ng-switch on="name.length">
+            <span ng-switch-when="0"></span>
+            <span ng-switch-when="4">4 characters</span>
+            <span ng-switch-default>other</span>
+        </span>
+        <span ng-if="name.length==10">bingo!</span>
+    <h1>Hello, {{getName()}}!</h1>
+    <h2 ng-bind="getName()">Loading...</h2>
+    <div ng-bind-html="unsafeName()"></div>
+</body>
+</html>
