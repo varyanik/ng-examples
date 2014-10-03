@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <script src="js/angular.js"></script>
+    <script>
+    angular.module('formatting', [])
+        .controller('FormattingCtrl', function($scope) {
+            $scope.text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, '
+                + 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. '
+                + 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris '
+                + 'nisi ut aliquip ex ea commodo consequat.';
+            $scope.date = new Date();
+            $scope.json = {
+                items: [1,2,3,4,5],
+                extra: {
+                    tools: 'auto',
+                    body: 10
+                }
+            };
+        })
+        .filter('trim', function(limitToFilter) { // $filter
+            // var limitToFilter = $filter('limitTo');
+            return function(input, limit) {
+                if (input.length > limit) {
+                    return limitToFilter(input, limit - 3) + '...';
+                }
+                return input;
+            };
+        });
+    </script>
+</head>
+<body ng-app="formatting" ng-controller="FormattingCtrl">
+    <div class="container">
+        <section class="well">
+            <h1>{{text | limitTo:80 | uppercase}}</h1>
+        </section>
+        <div>Today: {{date | date:'yyyy-MM-dd'}}</div>
+        <div>{{json | json}}</div>
+        <section class="well">
+            <h1>{{text | trim:80}}</h1>
+        </section>
+    </div>
+</body>
+</html>

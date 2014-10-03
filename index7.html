@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <script src="js/angular.js"></script>
+    <script>
+    angular.module('filtering', [])
+        .controller('FilteringCtrl', function($scope) {
+            $scope.items = [
+                {name: 'Alex', title: 'Owner', done: false},
+                {name: 'John', title: 'Manager', done: false},
+                {name: 'Liza', title: 'Secretary', done: true},
+                {name: 'Sergio', title: 'Developer', done: false}
+            ];
+
+            $scope.sortField = undefined;
+            $scope.reverse = false;
+            $scope.sort = function(fieldName) {
+                if ($scope.sortField === fieldName) {
+                    $scope.reverse = !$scope.reverse;
+                } else {
+                    $scope.sortField = fieldName;
+                    $scope.reverse = false;
+                }
+            };
+            $scope.isSortUp = function(fieldName) {
+                return $scope.sortField === fieldName && !$scope.reverse;
+            };
+            $scope.isSortDown = function(fieldName) {
+                return $scope.sortField === fieldName && $scope.reverse;
+            };
+        });
+    </script>
+</head>
+<body ng-app="filtering" ng-controller="FilteringCtrl">
+    <div class="container">
+        <section class="well">
+            <span class="glyphicon glyphicon-search"></span>
+            <input type="text" ng-model="criteria"/>
+            <table class="table table-bordered">
+                <tr>
+                    <th ng-click="sort('name')">
+                        Name <i class="glyphicon" ng-class="{'glyphicon-sort-by-attributes': isSortUp('name'), 'glyphicon-sort-by-attributes-alt': isSortDown('name')}"></i>
+                    </th>
+                    <th ng-click="sort('title')">
+                        Title
+                        <i class="glyphicon" ng-class="{'glyphicon-sort-by-attributes': isSortUp('title'), 'glyphicon-sort-by-attributes-alt': isSortDown('title')}"></i>
+                    </th>
+                    <th>Done</th>
+                </tr>
+                <tr ng-repeat="item in filteredItems = (items | filter: {$: criteria, done: false} | orderBy:sortField:reverse)">
+                    <td>{{item.name}}</td>
+                    <td>{{item.title}}</td>
+                    <td>{{item.done}}</td>
+                </tr>
+            </table>
+            Total: {{filteredItems.length}}
+        </section>
+    </div>
+</body>
+</html>
