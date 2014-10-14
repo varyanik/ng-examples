@@ -4,15 +4,16 @@
     <meta charset="utf-8">
     <script src="js/angular.js"></script>
     <script>
-    var HelloCtrl = function($scope) {
-        $scope.name = 'John';
-        $scope.getName = function() {
-            return $scope.name;
-        };
-    }
+    angular.module('firstStep', [])
+        .controller('HelloCtrl', function($scope) {
+            $scope.name = 'John';
+            $scope.getName = function() {
+                return $scope.name;
+            };
+        });
     </script>
 </head>
-<body ng-app ng-controller="HelloCtrl">
+<body ng-app="firstStep" ng-controller="HelloCtrl">
     Say <input type="text" ng-model="name">
     <h1>Hello, {{getName()}}!</h1>
     <h2 ng-bind="getName()">Loading...</h2>
