@@ -1,4 +1,4 @@
-AngularJS Examples
+AngularJS Examples (deprecated)
 ===========
 
 The latest version:
